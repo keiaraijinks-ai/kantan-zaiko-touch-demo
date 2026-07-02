@@ -499,3 +499,67 @@ select:focus {
     padding-bottom:210px;
   }
 }
+
+/* ==========================
+  iPad向け：下部バーコンパクト版
+  リセット・ホーム横並び
+========================== */
+
+.order-bar {
+  padding: 10px 14px !important;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.08) !important;
+}
+
+.order-summary {
+  font-size: 22px !important;
+  margin-bottom: 8px !important;
+}
+
+.order-summary span {
+  font-size: 26px !important;
+}
+
+.order-bar .confirm-button {
+  min-height: 62px !important;
+  height: 62px !important;
+  margin-top: 0 !important;
+  font-size: 26px !important;
+  padding: 8px !important;
+}
+
+.order-sub-buttons {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 8px !important;
+}
+
+.order-sub-buttons .sub-button {
+  flex: 1 !important;
+  min-height: 46px !important;
+  height: 46px !important;
+  margin-top: 0 !important;
+  font-size: 19px !important;
+  padding: 6px !important;
+}
+
+.takeout-screen {
+  padding-bottom: 165px !important;
+}
+
+@media screen and (max-width: 600px) {
+  .takeout-screen {
+    padding-bottom: 185px !important;
+  }
+
+  .order-bar .confirm-button {
+    min-height: 58px !important;
+    height: 58px !important;
+    font-size: 24px !important;
+  }
+
+  .order-sub-buttons .sub-button {
+    min-height: 44px !important;
+    height: 44px !important;
+    font-size: 18px !important;
+  }
+}
