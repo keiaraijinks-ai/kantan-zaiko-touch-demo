@@ -42,8 +42,10 @@
         合計<span id="selectedItemTotal">0</span>点
       </div>
       <button class="confirm-button" onclick="confirmTakeoutBatch()">持ち出し確定</button>
-      <button class="sub-button" onclick="clearSelectedItems()">選択をリセット</button>
-      <button class="sub-button" onclick="showScreen('homeScreen')">ホームへ戻る</button>
+      <div class="order-sub-buttons">
+        <button class="sub-button" onclick="clearSelectedItems()">リセット</button>
+        <button class="sub-button" onclick="showScreen('homeScreen')">ホーム</button>
+      </div>
     </div>
   </section>
 
