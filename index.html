@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>かんたん在庫タッチ</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1565c0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="かんたん在庫タッチ">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="icons/icon-192.png">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header class="app-header">
+  <h1>かんたん在庫タッチ</h1>
+</header>
+
+<main>
+
+  <section id="homeScreen" class="screen active">
+    <button class="main-button" onclick="showScreen('takeoutScreen')">持ち出し登録</button>
+    <button class="main-button" onclick="showScreen('stockScreen')">在庫確認</button>
+    <button class="main-button" onclick="showScreen('adminScreen')">管理者メニュー</button>
+  </section>
+
+  <section id="takeoutScreen" class="screen takeout-screen">
+    <h2>持ち出し登録</h2>
+    <div id="categoryButtons" class="category-area"></div>
+    <div id="productList" class="product-grid"></div>
+
+    <div class="order-bar">
+      <div class="order-summary">
+        選択中：<span id="selectedItemTypes">0</span>種類 /
+        合計<span id="selectedItemTotal">0</span>点
+      </div>
+      <button class="confirm-button" onclick="confirmTakeoutBatch()">持ち出し確定</button>
+      <button class="sub-button" onclick="clearSelectedItems()">選択をリセット</button>
+      <button class="sub-button" onclick="showScreen('homeScreen')">ホームへ戻る</button>
+    </div>
+  </section>
+
+  <section id="completeScreen" class="screen">
+    <h2>登録が完了しました</h2>
+    <div id="completeList" class="complete-box"></div>
+    <button class="main-button" onclick="showScreen('takeoutScreen')">続けて登録する</button>
+    <button class="sub-button" onclick="showScreen('homeScreen')">ホームへ戻る</button>
+  </section>
+
+  <section id="stockScreen" class="screen">
+    <h2>在庫確認</h2>
+    <div class="category-area">
+      <button onclick="renderStockList('all')">すべて</button>
+      <button onclick="renderStockList('alert')">発注が必要</button>
+    </div>
+    <div id="stockList" class="stock-list"></div>
+    <button class="sub-button" onclick="showScreen('homeScreen')">ホームへ戻る</button>
+  </section>
+
+  <section id="adminScreen" class="screen">
+    <h2>管理者メニュー</h2>
+    <button class="main-button" onclick="openProductForm()">商品を登録する</button>
+    <button class="main-button" onclick="renderEditProductList()">商品を編集・削除</button>
+    <button class="main-button" onclick="showScreen('inboundScreen')">入庫・在庫追加</button>
+    <button class="main-button" onclick="showScreen('categoryScreen')">カテゴリ管理</button>
+    <button class="main-button" onclick="showScreen('csvScreen')">CSV出力</button>
+    <button class="main-button" onclick="renderAlertList()">発注アラート一覧</button>
+    <button class="sub-button" onclick="showScreen('homeScreen')">ホームへ戻る</button>
+  </section>
+
+  <section id="productFormScreen" class="screen">
+    <h2 id="formTitle">商品登録</h2>
+
+    <input type="hidden" id="productId" />
+
+    <label>商品名</label>
+    <input type="text" id="productName" placeholder="例：コピー用紙" />
+
+    <label>カテゴリ</label>
+    <select id="productCategory"></select>
+
+    <label>商品画像</label>
+    <input type="file" id="productImage" accept="image/*" />
+
+    <label>現在在庫</label>
+    <input type="number" id="productStock" min="0" placeholder="例：20" />
+
+    <label>最低在庫数</label>
+    <input type="number" id="productMinStock" min="0" placeholder="例：5" />
+
+    <label>単位</label>
+    <input type="text" id="productUnit" placeholder="例：箱・本・個" />
+
+    <button class="confirm-button" onclick="saveProduct()">保存する</button>
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+  <section id="editProductScreen" class="screen">
+    <h2>商品編集・削除</h2>
+    <div id="editProductList" class="stock-list"></div>
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+  <section id="inboundScreen" class="screen">
+    <h2>入庫・在庫追加</h2>
+    <div id="inboundList" class="stock-list"></div>
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+  <section id="categoryScreen" class="screen">
+    <h2>カテゴリ管理</h2>
+
+    <label>新しいカテゴリ名</label>
+    <input type="text" id="newCategoryName" placeholder="例：介護用品" />
+    <button class="confirm-button" onclick="addCategory()">カテゴリを追加</button>
+
+    <div id="categoryManageList" class="stock-list margin-top"></div>
+
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+  <section id="csvScreen" class="screen">
+    <h2>CSV出力</h2>
+    <button class="main-button" onclick="exportStockCSV()">在庫一覧CSVを出力</button>
+    <button class="main-button" onclick="exportHistoryCSV()">持ち出し履歴CSVを出力</button>
+    <button class="main-button" onclick="exportInboundCSV()">入庫履歴CSVを出力</button>
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+  <section id="alertScreen" class="screen">
+    <h2>発注アラート一覧</h2>
+    <div id="alertList" class="stock-list"></div>
+    <button class="sub-button" onclick="showScreen('adminScreen')">戻る</button>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
